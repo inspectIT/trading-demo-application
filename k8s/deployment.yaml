@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: trading-demo
+#  annotations:
+#    instrumentation.opentelemetry.io/inject-java: true
+  name: trading-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: demo-app
+    spec:
+      containers:
+      - image: inspectit/trading-demo
+        name: trading-demo
+        resources: {}
+status: {}
