@@ -32,10 +32,10 @@ Using the following task, a JAR archive can be created which can be executed:
 If the demo should be started with multiple instances, a URL can be specified for the frontend instance, under which it can reach the backend instance.
 By default, this is set to `http://localhost:8080`.
 
-The URL can be specified using the system property `backend_url`. See the following example:
+The URL can be specified using the system property or environment variable  `BACKEND_URL`. See the following example:
 
 ```
-java -Dbackend_url=http://target:8081 -Dserver.port=8080 -jar ...
+java -DBACKEND_URL=http://target:8081 -Dserver.port=8080 -jar ...
 ```
 
 Please note that you have to specify the port used by the applications in case they are running on the same machine.
