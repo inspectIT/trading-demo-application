@@ -3,26 +3,29 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: trading-demo
-  name: trading-demo
+    app: trading-demo-frontend
+  name: trading-demo-frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demo-app
+      app: trading-demo-frontend
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: demo-app
+        app: trading-demo-frontend
       annotations:
         instrumentation.opentelemetry.io/inject-java: "true"
     spec:
       containers:
       - image: inspectit/trading-demo
-        name: trading-demo
+        name: trading-demo-frontend
         resources: {}
+        env:
+          - name: BACKEND_URL
+            value: http://trading-demo-backend:8080
 status: {}
 ---
 apiVersion: networking.k8s.io/v1
@@ -33,7 +36,7 @@ metadata:
 spec:
   defaultBackend:
     service:
-      name: trading-demo
+      name: trading-demo-frontend
       port:
         number: 8080
 status:
@@ -44,14 +47,14 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    app: trading-demo
-  name: trading-demo
+    app: trading-demo-frontend
+  name: trading-demo-frontend
 spec:
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
-    app: demo-app
+    app: trading-demo-frontend
 status:
   loadBalancer: {}
