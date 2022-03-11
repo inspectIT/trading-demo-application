@@ -4,8 +4,6 @@ metadata:
   creationTimestamp: null
   labels:
     app: trading-demo
-#  annotations:
-#    instrumentation.opentelemetry.io/inject-java: true
   name: trading-demo
 spec:
   replicas: 1
@@ -18,9 +16,42 @@ spec:
       creationTimestamp: null
       labels:
         app: demo-app
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: "true"
     spec:
       containers:
       - image: inspectit/trading-demo
         name: trading-demo
         resources: {}
 status: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: ingress
+spec:
+  defaultBackend:
+    service:
+      name: trading-demo
+      port:
+        number: 8080
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: trading-demo
+  name: trading-demo
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: demo-app
+status:
+  loadBalancer: {}
